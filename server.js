@@ -1,11 +1,22 @@
 const express = require('express');
-const PORT = 8080;
+require('dotenv').config();
+require('./database/database');
+
+const mongoose = require('mongoose');
+const PORT = process.env.PORT || 8080;
+
+const db = process.env.DATABASE_URI;
+
 const app = express();
+app.use(express.json());
 
+mongoose.connect(db).then(()=>{
+    console.log(`Successfully connected to database`);
 
+    app.listen(PORT,()=>{
+    console.log(`Server is runnng o port: ${PORT}`);
+     });
 
-
-app.listen(PORT, ()=>{
-    console.log(`Server is running on the PORT: ${PORT}`);
-    
+}) .catch((error) => {
+  console.log(`cannot connect to database because: ${error.message}`);
 })
